@@ -17,7 +17,7 @@ This repository serves as a live, operational runbook and engineering portfolio 
 | Asset Name | Role Identity | Operating System | Allocated Resource Profile | Network Segment |
 | :--- | :--- | :--- | :--- | :--- |
 | **DC01** | Active Directory Domain Controller | Windows Server 2022 Standard | 4 GB RAM / 2 vCPU / 60 GB VDI | Host-Only Private Sandbox |
-| **CLIENT01** | Enterprise Workplace Endpoint | Windows 10 Enterprise | 4 GB RAM / 2 vCPU / 50 GB VDI | Host-Only Private Sandbox |
+| **CLIENT01** | Enterprise Workplace Endpoint | Windows 11 Enterprise | 4 GB RAM / 2 vCPU / 50 GB VDI | Host-Only Private Sandbox |
 
 ---
 
