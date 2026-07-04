@@ -1,0 +1,23 @@
+# ====================================================================
+# ENTERPRISE IT SUPPORT LAB - GIT IGNORE ARCHITECTURE
+# ====================================================================
+
+# Ignore all VirtualBox Virtual Machines and multi-gigabyte hard disk files
+*.vdi
+*.vbox
+*.vbox-prev
+*.vmpro
+*.nvram
+*.log
+Snapshots/
+Logs/
+
+# Ignore local operating system configuration files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Allow markdown documentation files and project images
+!*.md
+!*.png
+!*.jpg
