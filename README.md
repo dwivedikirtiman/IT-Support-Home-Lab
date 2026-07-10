@@ -249,29 +249,88 @@ The administrative configurations below represent real-world helpdesk remediatio
 
 ***
 
-### 🎫 Ticket 3: Centralized Endpoint Patch Compliance Enforcement
-* **Ticket Request:** "Workstation end-users are continually pausing or bypassing critical Windows operating system updates, leaving our corporate endpoints exposed to software vulnerabilities. Implement a mandatory patch schedule and remove all local user update controls."
+### 🎫 Ticket 3: Restricting Access to Control Panel and System Settings
+* **Ticket Request:** "Standard non-IT employees are altering local system configurations, messing with display properties, and attempting to modify network adapter parameters. Implement a restriction blocking standard users from accessing the Control Panel or the Windows Settings app entirely."
 
-#### Step 1: Constructing the Windows Update Deployment GPO
+#### Step 1: Engineering the Control Panel Restriction GPO
 1. Opened `gpmc.msc` on the server machine console.
-2. Right-clicked the parent container target **`HQ-Employees`** OU, selected **"Create a GPO in this domain, and Link it here..."**, and titled it **`Windows_Update_Enforcement_GPO`**.
-3. Right-clicked the GPO file asset and chose **Edit...**.
-4. Carefully drilled down to this specific path: `Computer Configuration -> Policies -> Administrative Templates -> Windows Components -> Windows Update -> Manage end user experience`.
+2. Right-clicked the parent container target **`HQ-Employees`** OU, selected **"Create a GPO in this domain, and Link it here..."**, and titled it **`Restrict_Control_Panel_GPO`**.
+3. Right-clicked the new GPO asset and chose **Edit...**.
+4. Navigated through this specific path: `User Configuration -> Policies -> Administrative Templates -> Control Panel`.
+5. Located the policy rule **"Prohibit access to Control Panel and PC settings"**, double-clicked it, set it to **Enabled**, and committed the changes.
 
-#### Step 2: Enforcing Mandatory Compliance Keys
-Double-clicked and configured these three critical enterprise update settings:
-1. **Configure Automatic Updates:** Set to **Enabled**. Adjusted the automated deployment logic to **Option 4 - Auto download and schedule the install**. Scheduled the execution engine to deploy **Every Wednesday at 03:00 AM**.
-2. **No auto-restart with logged-on users for scheduled automatic updates installations:** Set to **Enabled**. This prevents the system from rebooting if users are working late or running critical overnight tasks.
-3. **Remove access to "Pause updates" feature:** Set to **Enabled** to remove system management controls from the end user.
+#### Step 2: Syncing Configurations and Verifying Compliance on Client
+1. Signed into the `Client-01` machine under **Rani Mishra's** standard user account.
+2. Opened Command Prompt and initiated a local group policy refresh command: `gpupdate /force`
+3. **Verification Output:** Attempted to open the Windows 11 Settings app or search for "Control Panel". The operating system instantly blocked the launch execution, dropping an enterprise restriction alert window stating: **"This operation has been cancelled due to restrictions in effect on this computer."**
 
-#### Step 3: Syncing Configurations and Verifying Compliance on Client
-1. Signed into the `Client-01` machine and initiated a local group policy refresh command inside PowerShell: `gpupdate /force`
-2. Launched the Windows 11 **Settings App** and opened the **Windows Update** menu.
-3. **Verification Output:** A gray warning notification appeared stating: **"*Some settings are managed by your organization"**. The tracking interface confirmed that the pause options are grayed out, and the update schedule is hardcoded to the server's rulebook.
 
-![Windows Update Corporate Setting Lockout Validation](assets/images/windows_update_gpo.png)
+![Restrict_Control_Panel_GPO Enable](assets/images/Restrict_Control_Panel_GPO Enable.png)
+
+![NON IT User Rani is Restricted to open Control Panel](assets/images/NON IT User Rani is Restricted to open Control Panel.png)
+
+
+***
+
+
+### 🎫 Ticket 4: Hypervisor Integration & Endpoint Optimization (Guest Additions Deployment)
+* **Ticket Request:** "IT engineering personnel are experiencing workflow bottlenecks due to isolation barriers between physical host engineering devices and the virtualized Windows 11 client workstation. Enable secure cross-environment data transmission, seamless mouse integration, and bidirectional clipboard operations."
+
+#### Step 1: Mounting the Hypervisor Integration Framework
+1. Inside the VirtualBox management interface for `Client-01`, accessed the top utility toolbar and navigated to: `Devices -> Insert Guest Additions CD Image...`. Please remember this should be done in the client machine by logging the administrator in my context it will be in other user then login to `kdlab\Administrator`
+2. Opened File Explorer inside the Windows 11 workstation, navigated to `This PC`, and double-clicked the virtual optical disk drive initialized as **CD Drive (D:) VirtualBox Guest Additions**.
+3. Right-clicked the deployment binary `VBoxWindowsAdditions-amd64.exe` and executed it via **Run as Administrator**.
+4. Progressed through the kernel installation wizards to deploy the underlying graphics drivers, mouse pointers filters, and dynamic systems bus adapters.
+5. Initiated a mandatory hardware-level restart of the virtual machine.
+
+#### Step 2: Provisioning the Hypervisor Communication Fabric
+1. Shut down the client workstation completely to unlock machine hardware configuration locks.
+2. Inside VirtualBox Settings for `Client-01`, navigated directly to `General -> Advanced`.
+3. Adjusted these two deep communication channels to production testing parameters:
+   * **Shared Clipboard:** Switched from *Disabled* to **Bidirectional**
+   * **Drag'n'Drop:** Switched from *Disabled* to **Bidirectional**
+4. Powered on the virtual machine workstation.
+
+#### Step 3: Operational Verification
+1. Logged into the Windows 11 workstation desktop interface.
+2. Copied a long string text key from the external physical host system notepad environment.
+3. Successfully pasted the clipboard data directly into the virtual machine command prompt terminal, verifying full host-to-guest data bridge functionality.
+
+![Installling Guest Addition in Client01 Start from Here](assets/images/Installling Guest Addition in Client01 Start from Here.png)
+![Installling Guest Addition in Client01](assets/images/Installling Guest Addition in Client01.png)
+![After Reboot simply enable bidirectional to enable the Bidirectional setting in client machine](assets/images/After Reboot simply enable bidirectional to enable the Bidirectional setting in client machine.png)
+
+***
+
+
+### 🎫 Ticket 5: Least-Privilege Access Control (Delegation of Active Directory Administrative Control)
+* **Ticket Request:** "Tier 1 Helpdesk personnel require operational capability to reset user passwords and unlock accounts for employees inside the `Finance-Dept` OU. To maintain a strong security posture, these technicians must not be granted global Domain Admin clearance. Delegate scoped administrative rights to the IT support staff."
+
+#### Step 1: Provisioning the Helpdesk Security Group Architecture
+1. Opened the Active Directory Users and Computers console (`dsa.msc`) on `DC01`.
+2. Navigated to the `IT-Dept` OU, right-clicked an empty space, and selected `New -> Group`.
+3. Created a Global Security Group named **`SG-Helpdesk-Staff`**.
+4. Opened the properties of the new security group, accessed the **Members** tab, added the domain user account **`Himanshu Mishra`** into the group, and committed the changes.
+
+#### Step 2: Executing Active Directory Permission Delegation
+1. Right-clicked directly on the target **`Finance-Dept`** OU container and launched the **Delegate Control Wizard**.
+2. Progressed to the Users and Groups selection screen, searched for **`SG-Helpdesk-Staff`**, and added the group to the delegation manifest.
+3. On the Tasks to Delegate window, checked the explicit administrative task box: **"Reset user passwords and force password change at next logon"**.
+4. Reviewed the access control modification metrics and clicked **Finish** to inject the custom Active Directory Access Control Entries (ACEs).
+
+#### Step 3: Scoped Authorization Testing & Verification
+1. Logged into `Client-01` using **Himanshu's** account credentials.
+2. Launched an elevated PowerShell terminal interface to simulate remote directory lookup tasks.
+3. Executed an administrative password override string targeted at Rani's account object inside the Finance OU to verify authorized clearance:
+   `Set-ADAccountPassword -Identity Rani -NewPassword (ConvertTo-SecureString "Dell@123456" -AsPlainText -Force) -Reset`
+4. **The Security Proof:** The command executed successfully because of the delegated permission rulebook. Attempted to run the same command against an account object outside of the Finance OU and verified that Active Directory blocked execution with an access denied error, confirming the restriction works flawlessly.
+
+![Delegation Wizard to Handover the power to the Group members](assets/images/Delegation Wizard to Handover the power to the Group members.png)
+
+![New Group in IT Dept to give access to the member of IT Dept](assets/images/New Group in IT Dept to give access to the member of IT Dept.png)
 
 ---
+
 
 ## Technical Competencies Matrix
 * **Virtualization Infrastructure Engineering:** Provisioned isolated virtual switches, mapped internal adapters, and managed isolated environments within VirtualBox.
