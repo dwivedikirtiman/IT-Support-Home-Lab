@@ -157,13 +157,13 @@ The administrative configurations below represent real-world helpdesk remediatio
 ### 🎫 Ticket 1: Cross-Departmental File Sharing Constraints (SMB Share & NTFS Security ACLs)
 * **Ticket Request:** "Deploy a central file repository on our infrastructure server. Our IT engineering personnel require private storage space for technical tools, and our Finance staff require isolated access for accounting paperwork. Neither team should be able to view or edit the other's shared department folders."
 
-#### Step 1: Physical Folder Provisioning & Gateway Access Configuration
+#### Step 1: Creating the Shared Folder and Setting Share Permissions
 1. Logged into `DC01` and generated a root folder named `C:\CompanyShares`. Inside, constructed two separate subdirectories: `IT-Data` and `Finance-Data`.
 2. Opened properties for `C:\CompanyShares`, entered the **Sharing** tab, and clicked **Advanced Sharing...**.
 3. Checked **Share this folder**, then opened the **Permissions** dashboard window.
 4. Selected the generic entry group **Everyone**, granted them **Full Control**, and committed the changes. This opens the network gateway, shifting actual security evaluations down to the local file system layer.
 
-#### Step 2: Fine-Grained NTFS Security Hardening
+#### Step 2: Setting NTFS Permissions on Each Subfolder
 1. Opened file system properties for the `IT-Data` folder and accessed the **Security** tab -> **Advanced** settings window.
 2. Clicked **Disable inheritance** and selected **"Convert inherited permissions into explicit permissions on this object"** to sever parent folder rules.
 3. Removed the generic built-in user entry groups (`Users`, `Authenticated Users`).
@@ -191,7 +191,7 @@ The administrative configurations below represent real-world helpdesk remediatio
 ### 🎫 Ticket 2: Brute-Force Authentication Defense (Account Lockout Policy Engineering)
 * **Ticket Request:** "Our cybersecurity audit requires proactive network defenses to mitigate brute-force guessing attacks targeting user passwords. Enforce an automated network lockout rule across the infrastructure."
 
-#### Step 1: Engineering the Lockout GPO Constraint
+#### Step 1: Configuring the Account Lockout Policy
 1. Opened the **Group Policy Management Console** (`gpmc.msc`) on `DC01`.
 2. Expanded the forest tree, right-clicked the global **Default Domain Policy** container, and selected **Edit...**.
 3. Navigated through this security path: `Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Account Policies -> Account Lockout Policy`.
@@ -200,7 +200,7 @@ The administrative configurations below represent real-world helpdesk remediatio
    * **Account lockout duration:** Set the temporary security freeze timer to `15` minutes.
 5. Closed the policy editing interface.
 
-#### Step 2: Triggering the Attack Vector and Executing System Remediation
+#### Step 2: Testing the Lockout and Unlocking the Account
 1. Shifted focus to the `Client-01` workstation terminal and executed a remote policy pull override string: `gpupdate /force`
 2. Logged out of the system, selected **Rani Mishra's** domain login option, and intentionally typed an invalid password three consecutive times.
 3. On the third bad password attempt, the operating system security engine blocked further login attempts, throwing a security alert window.
@@ -220,7 +220,7 @@ The administrative configurations below represent real-world helpdesk remediatio
 ### 🎫 Ticket 3: Restricting Access to Control Panel and System Settings
 * **Ticket Request:** "Standard non-IT employees are altering local system configurations, messing with display properties, and attempting to modify network adapter parameters. Implement a restriction blocking standard users from accessing the Control Panel or the Windows Settings app entirely."
 
-#### Step 1: Engineering the Control Panel Restriction GPO
+#### Step 1: Creating the GPO to Block Control Panel Access
 1. Opened `gpmc.msc` on the server machine console.
 2. Right-clicked the parent container target **`HQ-Employees`** OU, selected **"Create a GPO in this domain, and Link it here..."**, and titled it **`Restrict_Control_Panel_GPO`**.
 3. Right-clicked the new GPO asset and chose **Edit...**.
@@ -276,13 +276,13 @@ The administrative configurations below represent real-world helpdesk remediatio
 ### 🎫 Ticket 5: Least-Privilege Access Control (Delegation of Active Directory Administrative Control)
 * **Ticket Request:** "Tier 1 Helpdesk personnel require operational capability to reset user passwords and unlock accounts for employees inside the `Finance-Dept` OU. To maintain a strong security posture, these technicians must not be granted global Domain Admin clearance. Delegate scoped administrative rights to the IT support staff."
 
-#### Step 1: Provisioning the Helpdesk Security Group Architecture
+#### Step 1: Creating the Helpdesk Security Group
 1. Opened the Active Directory Users and Computers console (`dsa.msc`) on `DC01`.
 2. Navigated to the `IT-Dept` OU, right-clicked an empty space, and selected `New -> Group`.
 3. Created a Global Security Group named **`SG-Helpdesk-Staff`**.
 4. Opened the properties of the new security group, accessed the **Members** tab, added the domain user account **`Himanshu Mishra`** into the group, and committed the changes.
 
-#### Step 2: Executing Active Directory Permission Delegation
+#### Step 2: Running the Delegate Control Wizard
 1. Right-clicked directly on the target **`Finance-Dept`** OU container and launched the **Delegate Control Wizard**.
 2. Progressed to the Users and Groups selection screen, searched for **`SG-Helpdesk-Staff`**, and added the group to the delegation manifest.
 3. On the Tasks to Delegate window, checked the explicit administrative task box: **"Reset user passwords and force password change at next logon"**.

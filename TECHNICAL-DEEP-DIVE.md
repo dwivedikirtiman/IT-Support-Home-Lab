@@ -117,7 +117,32 @@ The principle of Least Privilege — give people only the access they need to do
 
 ---
 
-## Concept 6: What APIPA Addresses Mean and Why They Appear
+## Concept 6. Infrastructure Security Hardening: The Administrator Rename Protocol
+Hacker scripts regularly target the default username "Administrator" during automated network brute-force attacks. To eliminate this security vector, the master account name can be obscured using two production techniques:
+
+#### Option A: Global Workstation Lockdowns via GPO (Changes Client Local Admin Accounts)
+1. Opened the **Group Policy Management Editor** on `DC01`.
+2. Drilled down to: `Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Local Policies -> Security Options`.
+3. Located the policy rule: `Accounts: Rename administrator account` and double-clicked it.
+4. Checked the validation box labeled **"Define this policy setting"** to unlock the configuration field.
+5. Provided a secure, custom name (e.g., `KD-Admin` or `LabAdmin`) and committed the settings change.
+
+![Administrator Account Rename Using GPO Window](assets/images/Administrator_Account_Rename_Using_GPO_Window.png)
+
+
+#### Option B: Active Directory Direct Rename (Changes the Domain Controller Master Account Name)
+1. Opened **Active Directory Users and Computers** on the server.
+2. Navigated to the default **Users** folder interface.
+3. Right-clicked the literal user object labeled **Administrator** and executed a direct **Rename** command.
+4. Inputted the secure identity identifier (e.g., `KDAdmin`), pressed Enter, and confirmed the updated login string mappings within the verification window.
+
+![Administrator Account Rename Using Active Directory Users and Computer Window](assets/images/Administrator_Account_Rename_Using_Active_Directory_Users_and_Computer_Window.png)
+
+
+---
+
+
+## Concept 7: What APIPA Addresses Mean and Why They Appear
 
 When Windows cannot contact a DHCP server, it assigns itself an address in the range `169.254.0.1` to `169.254.255.254`. This is called an **APIPA address** — Automatic Private IP Addressing.
 
@@ -140,7 +165,7 @@ APIPA is one of the first things every L1 engineer learns to recognise. Seeing `
 
 ---
 
-## Concept 7: Kerberos Authentication — How Domain Logins Actually Work
+## Concept 8: Kerberos Authentication — How Domain Logins Actually Work
 
 When a user logs into a domain-joined machine, the following happens in the background:
 
@@ -159,7 +184,7 @@ This is why you cannot log into a domain account when the domain controller is u
 
 ---
 
-## Concept 8: Event IDs You Should Know for L1 Support
+## Concept 9: Event IDs You Should Know for L1 Support
 
 Event Viewer logs everything. These are the Event IDs that come up most often in real helpdesk work:
 
@@ -184,7 +209,7 @@ This is exactly what you would do during Ticket 06 to find the lockout event for
 
 ---
 
-## Concept 9: Why the SAM Database Backup Account Should Be Deleted After Domain Join
+## Concept 10: Why the SAM Database Backup Account Should Be Deleted After Domain Join
 
 When CLIENT01 was first set up as a standalone Windows 11 machine, the local account `Kirtiman Dwivedi` was created. After joining the domain, this account still exists in the SAM database on CLIENT01's local drive.
 
@@ -201,32 +226,6 @@ Leaving unused local accounts on domain-joined machines creates security risks:
 Always delete the profile first, then the account. Deleting the account first leaves orphaned profile files on the disk.
 
 ---
-
-
-## Concept 10. Infrastructure Security Hardening: The Administrator Rename Protocol
-Hacker scripts regularly target the default username "Administrator" during automated network brute-force attacks. To eliminate this security vector, the master account name can be obscured using two production techniques:
-
-#### Option A: Global Workstation Lockdowns via GPO (Changes Client Local Admin Accounts)
-1. Opened the **Group Policy Management Editor** on `DC01`.
-2. Drilled down to: `Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Local Policies -> Security Options`.
-3. Located the policy rule: `Accounts: Rename administrator account` and double-clicked it.
-4. Checked the validation box labeled **"Define this policy setting"** to unlock the configuration field.
-5. Injected a secure, custom name (e.g., `KD-Admin` or `LabAdmin`) and committed the settings change.
-
-![Administrator Account Rename Using GPO Window](assets/images/Administrator_Account_Rename_Using_GPO_Window.png)
-
-
-#### Option B: Active Directory Direct Rename (Changes the Domain Controller Master Account Name)
-1. Opened **Active Directory Users and Computers** on the server.
-2. Navigated to the default **Users** folder interface.
-3. Right-clicked the literal user object labeled **Administrator** and executed a direct **Rename** command.
-4. Inputted the secure identity identifier (e.g., `KDAdmin`), pressed Enter, and confirmed the updated login string mappings within the verification window.
-
-![Administrator Account Rename Using Active Directory Users and Computer Window](assets/images/Administrator_Account_Rename_Using_Active_Directory_Users_and_Computer_Window.png)
-
-
----
-
 
 
 
