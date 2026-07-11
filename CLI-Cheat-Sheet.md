@@ -1,5 +1,5 @@
 ```markdown
-# Enterprise IT Support - Command Line & Scripting Reference
+# IT Support Home Lab - Command Line & Scripting Reference
 
 This repository asset serves as the dedicated technical documentation for the command-line overrides, programmatic automation scripts, and administrative shortcuts engineered during the provisioning and management of the `kdlab.local` sandbox infrastructure.
 
