@@ -34,9 +34,9 @@ This project demonstrates the design, deployment, and management of a secure, ce
   * **IP Address:** `192.168.56.x` (Dynamic Host-Only Range)
   * **Preferred DNS:** `192.168.56.10` (Points directly to DC01 Resolver)
 
-![Server IPv4 Static Interface Settings](assets/images/Server IPv4 Static Interface Settings.png)
+![Server IPv4 Static Interface Settings](assets/images/Server_IPv4_Static_Interface_Settings.png)
 
-![Client -01 IPv4 Static Interface Settings](assets/images/Client -01 IPv4 Static Interface Settings.png)
+![Client -01 IPv4 Static Interface Settings](assets/images/Client01_IPv4_Static_Interface_Settings.png)
 
 
 ---
@@ -47,9 +47,9 @@ This project demonstrates the design, deployment, and management of a secure, ce
 ### 1. Virtual Switch Virtualization
 To ensure absolute network isolation and prevent conflict with residential internet gateways or corporate production DHCP servers, both virtual endpoints were explicitly mapped to a single network adapter bound to the **Host-Only Adapter** interface inside VirtualBox. This configuration mirrors an on-premises network framework cut off from the public web.
 
-![Server DC01 Host Only Adapter Network Setting](assets/images/Server DC01 Host Only Adapter Network Setting.png)
+![Server DC01 Host Only Adapter Network Setting](assets/images/Server_DC01_Host_Only_Adapter_Network_Setting.png)
 
-![Client-01 Host Only Adapter Network Setting](assets/images/Client-01 Host Only Adapter Network Setting.png)
+![Client-01 Host Only Adapter Network Setting](assets/images/Client01_Host_Only_Adapter_Network_Setting.png)
 
 
 
@@ -59,9 +59,9 @@ To ensure absolute network isolation and prevent conflict with residential inter
 * This forced the operating system installer to reboot and allow the creation of a standalone initial local administrator account named `Kirtiman Dwivedi`.
 
 
-![Windows Server 2022 Installation](assets/images/Windows Server 2022 Installation.png)
+![Windows Server 2022 Installation](assets/images/Windows_Server_2022_Installation.png)
 
-![Client 01 Windows 11 Pro Installation](assets/images/Client 01 Windows 11 Pro Installation.png)
+![Client 01 Windows 11 Pro Installation](assets/images/Client01_Windows11_Pro_Installation.png)
 
 ---
 
@@ -72,15 +72,15 @@ Core servers hosting directory architectures require persistent, un-changing IP 
 * Accessed network interface properties on `DC01` and manually configured the static IPv4 address `192.168.56.10` with a subnet mask of `255.255.255.0`.
 * Hardcoded the **Preferred DNS Server** value to `127.0.0.1` (Internal Loopback). This configuration mandates that the server resolve namespace definitions using its own local records database instead of standard public root servers.
 
-![Server IPv4 Static Interface Settings](assets/images/image_d2281f.png)
-![Server IPv4 Static Interface Settings](assets/images/Server IPv4 Static Interface Settings.png)
+
+![Server IPv4 Static Interface Settings](assets/images/Server_IPv4_Static_Interface_Settings.png)
 
 
 ### 2. Active Directory Installation & Forest Promotion
 * Initiated the **Add Roles and Features Wizard** inside Server Manager and deployed the **Active Directory Domain Services** binary roles.
 * Promoted the standalone server to a Domain Controller by launching the deployment engine and creating a brand new root forest namespace named `kdlab.local`. This operation initialized the global directory database catalog, built the directory structure, and provisioned the integrated primary lookup zones.
 
-![Active Directory Installation](assets/images/Active Directory Installation.png)
+![Active Directory Installation](assets/images/Active_Directory_Installation.png)
 
 ---
 
@@ -90,7 +90,7 @@ Core servers hosting directory architectures require persistent, un-changing IP 
 Before the Windows 11 workstation can register itself against the centralized domain infrastructure, it must know where to find the directory controller.
 * Opened local network adapter settings on the Windows 11 workstation and targeted the **Preferred DNS Server** parameter directly to the Server IP address: `192.168.56.10`.
 
-![Client -01 IPv4 Static Interface Settings](assets/images/Client -01 IPv4 Static Interface Settings.png)
+![Client -01 IPv4 Static Interface Settings](assets/images/Client01_IPv4_Static_Interface_Settings.png)
 
 
 
@@ -98,7 +98,7 @@ Before the Windows 11 workstation can register itself against the centralized do
 Executed an ICMP echo verification from the client terminal to confirm network layer routing and verify that the local DNS resolver successfully translates string domain definitions to network addresses by running the command `ping kdlab.local`.
 * **Analysis Metrics:** 0% packet drop. The internal lookup engine instantly parsed the `kdlab.local` text namespace and received return packets directly from target IP `192.168.56.10`.
 
-![Client Terminal Ping Resolution Verification](assets/images/Client Terminal Ping Resolution Verification.png)
+![Client Terminal Ping Resolution Verification](assets/images/Client_Terminal_Ping_Resolution_Verification.png)
 
 
 
@@ -108,7 +108,7 @@ Executed an ICMP echo verification from the client terminal to confirm network l
 * Authenticated using the master domain `Administrator` user profile to authorize the machine account inside the server database.
 * Successfully initialized the system reboot script to apply the domain integration parameters.
 
-![Domain Join Success Intercept Window](assets/images/Domain Join Success Intercept Window.png)
+![Domain Join Success Intercept Window](assets/images/Domain_Join_Success_Intercept_Window.png)
 
 ---
 
@@ -151,7 +151,7 @@ Hacker scripts regularly target the default username "Administrator" during auto
 4. Checked the validation box labeled **"Define this policy setting"** to unlock the configuration field.
 5. Injected a secure, custom name (e.g., `KD-Boss` or `LabAdmin`) and committed the settings change.
 
-![Administrator Account Rename Using GPO Window](assets/images/Administrator Account Rename Using GPO Window.png)
+![Administrator Account Rename Using GPO Window](assets/images/Administrator_Account_Rename_Using_GPO_Window.png)
 
 
 #### Option B: Active Directory Direct Rename (Changes the Domain Controller Master Account Name)
@@ -160,7 +160,7 @@ Hacker scripts regularly target the default username "Administrator" during auto
 3. Right-clicked the literal user object labeled **Administrator** and executed a direct **Rename** command.
 4. Inputted the secure identity identifier (e.g., `KDAdmin`), pressed Enter, and confirmed the updated login string mappings within the verification window.
 
-![Administrator Account Rename Using Active Directory Users and Computer Window](assets/images/Administrator Account Rename Using Active Directory Users and Computer Window.png)
+![Administrator Account Rename Using Active Directory Users and Computer Window](assets/images/Administrator_Account_Rename_Using_Active_Directory_Users_and_Computer_Window.png)
 
 
 ---
@@ -174,14 +174,14 @@ To establish an enterprise directory framework, automated configurations must ta
 * Constructed a root parent Organizational Unit container named `HQ-Employees`.
 * Developed two scoped departmental sub-OUs nested beneath the parent folder structure: `IT-Dept` and `Finance-Dept`.
 
-![Organization Unit and Sub Organization Unit](assets/images/Organization Unit and Sub Organization Unit.png)
+![Organization Unit and Sub Organization Unit](assets/images/Organization_Unit_and_Sub_Organization_Unit.png)
 
 ### 2. User & System Provisioning Workflows
 * Created corporate domain identity profile **Himanshu Mishra** and mapped the account object directly into the `IT-Dept` OU.
 * Created corporate domain identity profile **Rani Mishra** and mapped the account object directly into the `Finance-Dept` OU.
 * Located the newly joined `Client-01` computer account object within the default system container and dragged it directly into the newly constructed, policy-targeted `HQ-Employees` parent OU.
 
-![Active Directory Scoped OU Layout](assets/images/Active Directory Scoped OU Layout.png)
+![Active Directory Scoped OU Layout](assets/images/Active_Directory_Scoped_OU_Layout.png)
 
 ---
 
@@ -213,9 +213,13 @@ The administrative configurations below represent real-world helpdesk remediatio
 5. After this both the users should access only allocated resources to them and should get a warning of denied permission on accessing the other folder.
 
 
-![New folder with two subfolder(IT-Dept and Finance-Dept) created](assets/images/New folder with two subfolder(IT-Dept and Finance-Dept) created.png)
-![After Mapping IT-Data for user Himanshu](assets/images/After Mapping IT-Data for user Himanshu.png)
-![User Himanshu is not able to open Finance-Dept](assets/images/User Himanshu is not able to open Finance-Dept.png)
+![New folder with two subfolder(IT-Dept and Finance-Dept)created](assets/images/Ticket_1/New_folder_with_two_subfolder(IT_Dept_and_Finance_Dept)_created.png)
+
+
+![After Mapping IT-Data for user Himanshu](assets/images/Ticket_1/After_Mapping_IT_Data_for_user_Himanshu.png)
+
+
+![User Himanshu is not able to open Finance-Dept](assets/images/Ticket_1/User_Himanshu_is_not_able_to_open_Finance_Dept.png)
 
 ***
 
@@ -236,14 +240,13 @@ The administrative configurations below represent real-world helpdesk remediatio
 2. Logged out of the system, selected **Rani Mishra's** domain login option, and intentionally typed an invalid password three consecutive times.
 3. On the third bad password attempt, the operating system security engine blocked further login attempts, throwing a security alert window.
 
-![Default Domain Policy for Account Lock](assets/images/Default Domain Policy for Account Lock.png)
+![Default Domain Policy for Account Lock](assets/images/Ticket_2/Default_Domain_Policy_for_Account_Lock.png)
 
-![Windows 11 Client Account Lockout Intercept Error](assets/images/Windows 11 Client Account Lockout Intercept Error.png)
+![Windows 11 Client Account Lockout Intercept Error](assets/images/Ticket_2/Windows11_Client_Account_Lockout_Intercept_Error.png)
 
 4. To resolve the user lockout, returned to the server AD console (`dsa.msc`), found Rani's properties window, navigated to the **Account** tab, checked the box labeled **"Unlock account"**, and hit Apply to restore her login rights.
 
-![User Unblock From Active Directory Users and Computers wizard](assets/images/User Unblock From Active Directory Users and Computers wizard.png)
-
+![User Unblock From Active Directory Users and Computers wizard](assets/images/Ticket_2/User_Unblock_From_Active_Directory_Users_and_Computers_wizard.png)
 
 
 
@@ -265,9 +268,9 @@ The administrative configurations below represent real-world helpdesk remediatio
 3. **Verification Output:** Attempted to open the Windows 11 Settings app or search for "Control Panel". The operating system instantly blocked the launch execution, dropping an enterprise restriction alert window stating: **"This operation has been cancelled due to restrictions in effect on this computer."**
 
 
-![Restrict_Control_Panel_GPO Enable](assets/images/Restrict_Control_Panel_GPO Enable.png)
+![Restrict_Control_Panel_GPO Enable](assets/images/Ticket_3/Restrict_Control_Panel_GPO_Enable.png)
 
-![NON IT User Rani is Restricted to open Control Panel](assets/images/NON IT User Rani is Restricted to open Control Panel.png)
+![NON IT User Rani is Restricted to open Control Panel](assets/images/Ticket_3/NON_IT_User_Rani_is_Restricted_to_open_Control_Panel.png)
 
 
 ***
@@ -296,9 +299,11 @@ The administrative configurations below represent real-world helpdesk remediatio
 2. Copied a long string text key from the external physical host system notepad environment.
 3. Successfully pasted the clipboard data directly into the virtual machine command prompt terminal, verifying full host-to-guest data bridge functionality.
 
-![Installling Guest Addition in Client01 Start from Here](assets/images/Installling Guest Addition in Client01 Start from Here.png)
-![Installling Guest Addition in Client01](assets/images/Installling Guest Addition in Client01.png)
-![After Reboot simply enable bidirectional to enable the Bidirectional setting in client machine](assets/images/After Reboot simply enable bidirectional to enable the Bidirectional setting in client machine.png)
+![Installling Guest Addition in Client01 Start from Here](assets/images/Ticket_4/Installling_Guest_Addition_in_Client01_Start_from_Here.png)
+
+![Installling Guest Addition in Client01](assets/images/Ticket_4/Installling_Guest_Addition_in_Client01.png)
+
+![After Reboot simply enable bidirectional to enable the Bidirectional setting in client machine](assets/images/Ticket_4/After_Reboot_simply_enable_bidirectional_to_enable_the_Bidirectional_setting_in_client_machine.png)
 
 ***
 
@@ -325,9 +330,9 @@ The administrative configurations below represent real-world helpdesk remediatio
    `Set-ADAccountPassword -Identity Rani -NewPassword (ConvertTo-SecureString "Dell@123456" -AsPlainText -Force) -Reset`
 4. **The Security Proof:** The command executed successfully because of the delegated permission rulebook. Attempted to run the same command against an account object outside of the Finance OU and verified that Active Directory blocked execution with an access denied error, confirming the restriction works flawlessly.
 
-![Delegation Wizard to Handover the power to the Group members](assets/images/Delegation Wizard to Handover the power to the Group members.png)
+![Delegation Wizard to Handover the power to the Group members](assets/images/Ticket_5/Delegation_Wizard_to_Handover_the_power_to_the_Group_members.png)
 
-![New Group in IT Dept to give access to the member of IT Dept](assets/images/New Group in IT Dept to give access to the member of IT Dept.png)
+![New Group in IT Dept to give access to the member of IT Dept](assets/images/Ticket_5/New_Group_in_IT_Dept_to_give_access_to_the_member_of_IT_Dept.png)
 
 ---
 
