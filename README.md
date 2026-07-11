@@ -21,6 +21,24 @@ This project demonstrates the design, deployment, and management of a secure, ce
 
 ---
 
+## Skills Demonstrated
+- VirtualBox VM creation and network configuration
+- Windows Server 2022 installation and initial setup
+- Active Directory Domain Services (AD DS) installation and forest creation
+- Static IP addressing and DNS configuration on a domain controller
+- DHCP server setup and scope configuration
+- Windows 11 domain join process
+- Organisational Unit (OU) structure design
+- User account and security group creation and management
+- Group Policy Object (GPO) creation, linking, and testing
+- SMB file sharing with NTFS permission hardening
+- Account lockout policy configuration
+- Delegation of Control for scoped helpdesk permissions
+- PowerShell for Active Directory administration
+- CLI troubleshooting (ipconfig, ping, nslookup, gpupdate, net user)
+
+---
+
 ## Network Topology & Technical Architecture
 * **Domain Name:** `kdlab.local`
 * **Network Interconnect:** Private Host-Only Virtual Network (Isolated Link)
@@ -112,60 +130,7 @@ Executed an ICMP echo verification from the client terminal to confirm network l
 
 ---
 
-## Phase 4: Systems Architecture Deep-Dives
-
-### 1. Architectural Analysis: The "Domain Admin" Illusion Explained
-When a systems administrator logs into the Windows 11 client machine using the server's master administrative credentials (`kdlab\Administrator`), the client machine does not transform into a server operating system. It remains a standard Windows 11 installation. 
-
-This access level is controlled by a hidden background mechanism known as **Local Group Nested Trust**. The moment `Client-01` joined the `kdlab.local` domain, its internal security architecture altered its local **Administrators** security group. It automatically injected a permanent trust rule stating: 
-> *"I explicitly trust the security clearance of the `kdlab.local` Domain Controller. Therefore, any identity group member belonging to the **Domain Admins** group on that server automatically holds full Local Administrator privileges on this endpoint."*
-
-When you log in, Windows 11 validates the password against the server. Once the server confirms identity, Windows 11 generates an elevated system token, unlocking full programmatic access to its local Registry, C:\ storage drive, and system databases.
-
-### 2. Identity Security Logic: Local vs. Domain Accounts
-Understanding where user credentials live under the hood is critical for systems management:
-* **Local User Accounts:** This account's credentials, configurations, and identity exist exclusively inside a file called the **SAM (Security Accounts Manager) database** locked within the physical storage drive of `Client-01`. The central server has zero knowledge of its existence, cannot reset its password, and cannot track its activity.
-* **Domain User Accounts:** These account identities live centrally inside the primary database engine (`ntds.dit`) on the Domain Controller. This architecture enables Single Sign-On (SSO) capacity, allowing these users to securely authenticate against *any* computer object connected to the network fabric.
-
-### 3. Operating System Account Management: Tracking and Purging Zombie Local Profiles
-Leaving unmanaged local profiles lingering on a domain-joined machine creates severe corporate security vulnerabilities. To permanently remove the original local staging account and clean up disk usage, use this administrative cleanup process:
-
-#### Step A: Discovering the Account via Elevated Domain Access
-1. Authenticated into `Client-01` using the master domain account `kdlab\Administrator`.
-2. Right-clicked the Start Menu and launched **Computer Management**.
-3. Navigated through `System Tools -> Local Users and Groups -> Users`. The local database display reveals the exact underlying account name for the user profile.
-
-#### Step B: Wiping Profile Artifacts and Deleting the Account
-1. Disconnected the account profile and registry footprints by opening the Run window and executing `sysdm.cpl`.
-2. Navigated to the **Advanced** tab -> *User Profiles* section -> and clicked **Settings...**.
-3. Highlighted the legacy account identifier labeled `CLIENT-01\Kirtiman Dwivedi` and clicked **Delete**. This operation purges the local folder structure (`C:\Users\Kirtiman`) and sweeps the system registry.
-4. Returned to **Computer Management**, right-clicked the user name target, and selected **Delete** to erase it from the local user catalog.
-
-### 4. Infrastructure Security Hardening: The Administrator Rename Protocol
-Hacker scripts regularly target the default username "Administrator" during automated network brute-force attacks. To eliminate this security vector, the master account name can be obscured using two production techniques:
-
-#### Option A: Global Workstation Lockdowns via GPO (Changes Client Local Admin Accounts)
-1. Opened the **Group Policy Management Editor** on `DC01`.
-2. Drilled down to: `Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Local Policies -> Security Options`.
-3. Located the policy rule: `Accounts: Rename administrator account` and double-clicked it.
-4. Checked the validation box labeled **"Define this policy setting"** to unlock the configuration field.
-5. Injected a secure, custom name (e.g., `KD-Boss` or `LabAdmin`) and committed the settings change.
-
-![Administrator Account Rename Using GPO Window](assets/images/Administrator_Account_Rename_Using_GPO_Window.png)
-
-
-#### Option B: Active Directory Direct Rename (Changes the Domain Controller Master Account Name)
-1. Opened **Active Directory Users and Computers** on the server.
-2. Navigated to the default **Users** folder interface.
-3. Right-clicked the literal user object labeled **Administrator** and executed a direct **Rename** command.
-4. Inputted the secure identity identifier (e.g., `KDAdmin`), pressed Enter, and confirmed the updated login string mappings within the verification window.
-
-![Administrator Account Rename Using Active Directory Users and Computer Window](assets/images/Administrator_Account_Rename_Using_Active_Directory_Users_and_Computer_Window.png)
-
-
----
-
-## Phase 5: Centralized Identity & Access Management (IAM)
+## Phase 4: Centralized Identity & Access Management (IAM)
 
 To establish an enterprise directory framework, automated configurations must target structural compartments rather than loose account objects.
 
@@ -185,7 +150,7 @@ To establish an enterprise directory framework, automated configurations must ta
 
 ---
 
-## Phase 6: Production Support Tickets & Enterprise Security Deployments
+## Phase 5: Production Support Tickets & Enterprise Security Deployments
 
 The administrative configurations below represent real-world helpdesk remediation tasks executed across this dual-node testing environment.
 
@@ -336,12 +301,7 @@ The administrative configurations below represent real-world helpdesk remediatio
 
 ---
 
+*Built by Kirtiman Dwivedi
 
-## Technical Competencies Matrix
-* **Virtualization Infrastructure Engineering:** Provisioned isolated virtual switches, mapped internal adapters, and managed isolated environments within VirtualBox.
-* **Core Network Administration:** Managed static IPv4 allocations, handled subnet calculations, and implemented local loopback DNS zone logic.
-* **Active Directory Directory Services (AD DS):** Deployed root forest architectures, constructed Organizational Units, and managed security groups.
-* **Identity & Access Management (IAM):** Provisioned domain user accounts, tracked active SIDs, managed directory object lifecycles, and handled helpdesk lockouts.
-* **Group Policy Object (GPO) Design:** Engineered baseline security rulebooks, targeted rules at specific OUs, handled policy sync processing, and deployed system rules.
-* **Storage Systems Hardening:** Implemented SMB protocols, disabled permission inheritance, and configured NTFS access control lists (ACLs).
-* **Corporate IT Helpdesk Workflow:** Handled user ticketing procedures, managed remote troubleshooting, tracked configuration testing, and wrote professional technical documentation.
+
+
