@@ -3,6 +3,9 @@
 ## Project Overview
 This project demonstrates the design, deployment, and management of a secure, centralized enterprise network infrastructure using Windows Server 2022 and a Windows 11 Client workstation. Operating inside an isolated virtual environment via VirtualBox, this lab simulates real-world corporate systems administration tasks including Domain Controller provisioning, Active Directory Domain Services (AD DS) management, Identity and Access Management (IAM), Group Policy Object (GPO) engineering, and secure network file systems (SMB/NTFS).
 
+
+**Related Project:** [Project 2 — Network Diagnostics and Troubleshooting Runbook](https://github.com/dwivedikirtiman/Network-Diagnostics-Runbook.git)
+
 ---
 
 ## 💻 Lab Hardware Specifications (Physical Host)
